@@ -9,21 +9,84 @@ import java.security.*;
  *
  */
 public class PKIServices {
+	
+	KeyPair keyPair;
 
 	public boolean generateKeyPair(){
 		System.out.println("Not implemented:PKIServices::generateKeyPair");
 		
 		try{
-
-		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
-		KeyPair pair = keyGen.generateKeyPair();
-		@SuppressWarnings("unused")
-		PrivateKey priv = pair.getPrivate();
-		@SuppressWarnings("unused")
-		PublicKey pub = pair.getPublic();
-		} catch (Exception e) {
+			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+			keyGen.initialize(1024);
+			keyPair = keyGen.generateKeyPair();
+			
+		    File privateKeyFile = new File("c:\\users\\david\\documents\\private.key");
+			File publicKeyFile = new File("c:\\users\\david\\documents\\public.key");
+			
+			// Create files to store public and private key
+			if (privateKeyFile.getParentFile() != null) {
+			  privateKeyFile.getParentFile().mkdirs();
+			}
+			privateKeyFile.createNewFile();
+			
+			if (publicKeyFile.getParentFile() != null) {
+			  publicKeyFile.getParentFile().mkdirs();
+			}
+			publicKeyFile.createNewFile();
+			
+		    // Saving the Public key in a file
+		    ObjectOutputStream publicKeyOS = new ObjectOutputStream(
+		        new FileOutputStream(publicKeyFile));
+		    publicKeyOS.writeObject(keyPair.getPublic());
+		    publicKeyOS.close();
+	
+		    // Saving the Private key in a file
+		    ObjectOutputStream privateKeyOS = new ObjectOutputStream(
+		        new FileOutputStream(privateKeyFile));
+		    privateKeyOS.writeObject(keyPair.getPrivate());
+		    privateKeyOS.close();
+		} 
+		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
         }
+		
+		
+		/*
+try {
+      final KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
+      keyGen.initialize(1024);
+      final KeyPair key = keyGen.generateKeyPair();
+
+      File privateKeyFile = new File(PRIVATE_KEY_FILE);
+      File publicKeyFile = new File(PUBLIC_KEY_FILE);
+
+      // Create files to store public and private key
+      if (privateKeyFile.getParentFile() != null) {
+        privateKeyFile.getParentFile().mkdirs();
+      }
+      privateKeyFile.createNewFile();
+
+      if (publicKeyFile.getParentFile() != null) {
+        publicKeyFile.getParentFile().mkdirs();
+      }
+      publicKeyFile.createNewFile();
+
+      // Saving the Public key in a file
+      ObjectOutputStream publicKeyOS = new ObjectOutputStream(
+          new FileOutputStream(publicKeyFile));
+      publicKeyOS.writeObject(key.getPublic());
+      publicKeyOS.close();
+
+      // Saving the Private key in a file
+      ObjectOutputStream privateKeyOS = new ObjectOutputStream(
+          new FileOutputStream(privateKeyFile));
+      privateKeyOS.writeObject(key.getPrivate());
+      privateKeyOS.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+ 
+		 * */
 		return false;
 	}
 	
