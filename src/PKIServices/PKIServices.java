@@ -50,44 +50,7 @@ public class PKIServices {
             System.err.println("Caught exception " + e.toString());
         }
 		
-		
-		/*
-try {
-      final KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
-      keyGen.initialize(1024);
-      final KeyPair key = keyGen.generateKeyPair();
-
-      File privateKeyFile = new File(PRIVATE_KEY_FILE);
-      File publicKeyFile = new File(PUBLIC_KEY_FILE);
-
-      // Create files to store public and private key
-      if (privateKeyFile.getParentFile() != null) {
-        privateKeyFile.getParentFile().mkdirs();
-      }
-      privateKeyFile.createNewFile();
-
-      if (publicKeyFile.getParentFile() != null) {
-        publicKeyFile.getParentFile().mkdirs();
-      }
-      publicKeyFile.createNewFile();
-
-      // Saving the Public key in a file
-      ObjectOutputStream publicKeyOS = new ObjectOutputStream(
-          new FileOutputStream(publicKeyFile));
-      publicKeyOS.writeObject(key.getPublic());
-      publicKeyOS.close();
-
-      // Saving the Private key in a file
-      ObjectOutputStream privateKeyOS = new ObjectOutputStream(
-          new FileOutputStream(privateKeyFile));
-      privateKeyOS.writeObject(key.getPrivate());
-      privateKeyOS.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
- 
-		 * */
-		return false;
+		return true;
 	}
 	
 	public boolean signMessage(){
@@ -102,6 +65,21 @@ try {
 	
 	public boolean encryptMessage(){
 		System.out.println("Not implemented:PKIServices::encryptMessage");
+		return false;
+	}
+	
+	public boolean hashSHA256(byte []digest, String message){
+		MessageDigest localDigest;
+		try {
+			localDigest = MessageDigest.getInstance("SHA-256");
+			digest = localDigest.digest(message.getBytes("UTF-8"));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (Exception e) {
+            System.err.println("Caught exception " + e.toString());
+        }
 		return false;
 	}
 	
