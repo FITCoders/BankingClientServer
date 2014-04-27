@@ -53,9 +53,9 @@ public class Server extends Thread {
  
         public void run() {
  
+            PrintWriter pw = null;
+            BufferedReader br = null;
             try {
-                PrintWriter pw = null;
-                BufferedReader br = null;
                 String data = null;
                 try {
                         br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -70,10 +70,18 @@ public class Server extends Thread {
                     ioe.printStackTrace();
                 }
                 pw.close();
+                br.close();
                 socket.close();
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                pw.close();
+                try {
+                	br.close();
+                    socket.close();
+                } catch (IOException e) {
+                	// TODO Auto-generated catch block
+                	e.printStackTrace();
+                }            }
         }
     }
 	
