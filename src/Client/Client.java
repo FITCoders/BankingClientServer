@@ -20,6 +20,7 @@ import PKIServices.*;
 public class Client {
     private static final String HOST = "localhost";
     private static final int PORT = 2348;
+    String accountNum;
     BufferedReader serverResponse;
     PrintWriter clientRequest;
 	PKIServices pkiServices;
@@ -63,13 +64,13 @@ public class Client {
 	/**
 	 * 
 	 */
-	public Client() {
-		System.out.println("Not implemented:Client::Constructor");
+	public Client(String accountNum) {
+		System.out.println("Client::Constructor");
+		this.accountNum = accountNum;
 		this.pkiServices = new PKIServices();
 		// TODO Auto-generated constructor stub
 	}
 	public void requestBalance() {
-		String accountNum = "123456";
 		System.out.println("Client::requestBalance");
 		
 		BalanceRequest requestMessage = new BalanceRequest();
@@ -83,3 +84,6 @@ public class Client {
 	}
 
 }
+
+
+

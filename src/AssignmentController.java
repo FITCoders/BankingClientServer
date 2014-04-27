@@ -20,6 +20,7 @@ public class AssignmentController {
 	 * 
 	 */
 	static String choice;
+	static String accountNum;
 	Server server;
 
 	public AssignmentController() {
@@ -31,7 +32,8 @@ public class AssignmentController {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("Not implemented:main ()");
+		System.out
+				.println("Not implemented:main () finally we have a round trip...and now at long last I think it works");
 		System.out.println("Enter C to run client or S to run server : ");
 		BufferedReader userInput = new BufferedReader(new InputStreamReader(
 				System.in));
@@ -48,7 +50,14 @@ public class AssignmentController {
 //		    server.start();
 //			server.receive();
 		} else {
-			Client client = new Client();
+			try {
+				System.out.println("Enter Account Number : ");
+				accountNum = userInput.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Client client = new Client(accountNum);
 			client.connectToServer();
 			client.requestBalance();
 			client.receive();
