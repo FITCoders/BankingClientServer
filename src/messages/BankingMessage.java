@@ -1,4 +1,5 @@
 package messages;
+import transactionServices.ClientInfo;
 /**
  * 
  */
@@ -9,13 +10,21 @@ package messages;
  */
 public abstract class BankingMessage {
 	
+	String command;
+	ClientInfo client; // = new ClientInfo;
+	String accountId;
 	abstract boolean send();
 	
 	/**
 	 * 
 	 */
 	public BankingMessage() {
-		System.out.println("Not implemented:BankingMessage::Constructor");
+		
+	}
+
+	public BankingMessage(String clientId) {
+		System.out.println("BankingMessage::Constructor");
+		client.setClientId(clientId);
 
 		// TODO Auto-generated constructor stub
 	}

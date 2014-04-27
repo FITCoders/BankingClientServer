@@ -1,10 +1,26 @@
 package messages;
 
+import transactionServices.ClientInfo;
+
 public class BalanceRequest extends BankingMessage {
 
-	public BalanceRequest() {
-		System.out.println("Not implemented:BalanceRequest::Constructor");
-		// TODO Auto-generated constructor stub
+	public BalanceRequest(String clientId) {
+		System.out.println("BalanceRequest::Constructor");
+		command = "REQUEST_BALANCE";
+		client = new ClientInfo(clientId);
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public String getClientId() {
+		return client.getClientId();
+	}
+
+	public void setClientId(String accountId) {
+		
+	    this.accountId = accountId;
 	}
 
 	public boolean send(){

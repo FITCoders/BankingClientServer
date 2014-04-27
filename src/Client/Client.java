@@ -19,7 +19,7 @@ import PKIServices.*;
  */
 public class Client {
     private static final String HOST = "localhost";
-    private static final int PORT = 2348;
+    private static final int PORT = 2349;
     String accountNum;
     BufferedReader serverResponse;
     PrintWriter clientRequest;
@@ -68,22 +68,22 @@ public class Client {
 		System.out.println("Client::Constructor");
 		this.accountNum = accountNum;
 		this.pkiServices = new PKIServices();
-		// TODO Auto-generated constructor stub
 	}
 	public void requestBalance() {
 		System.out.println("Client::requestBalance");
 		
-		BalanceRequest requestMessage = new BalanceRequest();
-        clientRequest.println("REQUEST_BALANCE " + accountNum);
+		BalanceRequest requestMessage = new BalanceRequest(accountNum);
+        clientRequest.println(requestMessage.getCommand() + " " + requestMessage.getClientId());
         clientRequest.flush();
 		pkiServices.signMessage();
-		
-
-		// TODO Auto-generated method stub
 		
 	}
 
 }
+
+
+
+
 
 
 

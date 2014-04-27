@@ -2,22 +2,38 @@ package transactionServices;
 
 public class ClientInfo {
 
-	public int clientId;
+	public String clientId;
 	public String clientName;
-	public int clientBalance;
+	public double clientBalance;
 
-	public int getClientId() {
-		clientId = 1;
+	public ClientInfo(String clientId) {
+		System.out.println("ClientInfo::Constructor");
+		this.clientId = clientId;
+	}
+	
+	public ClientInfo(String clientId, String clientName) {
+		System.out.println("ClientInfo::Constructor");
+		this.clientId = clientId;
+		this.clientName = clientName;
+	}
+
+	public ClientInfo(String clientId, String clientName, double clientBalance) {
+		System.out.println("ClientInfo::Constructor");
+		this.clientId = clientId;
+		this.clientName = clientName;
+		this.clientBalance = clientBalance;
+	}
+
+	public String getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(int clientId) {
+	public void setClientId(String clientId) {
 		
 	    this.clientId = clientId;
 	}
 
 	public String getClientName() {
-		clientName = "Sami";
 		return clientName;
 	}
 
@@ -26,12 +42,11 @@ public class ClientInfo {
 	    this.clientName = clientName;
 	}
 
-	public int getClientBalance(){
-		clientBalance = 4500;
+	public double getClientBalance(){
 		return clientBalance;
 	}
 
-	public void setClientBalance(int clientBalance){
+	public void setClientBalance(double clientBalance){
 		
 		this.clientBalance = clientBalance;
 	}
