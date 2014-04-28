@@ -101,7 +101,7 @@ public class Server extends Thread {
 
 	public boolean receive() {
 		System.out.println("Not implemented:Server::receive");
-		pkiServices.validateMessage();
+		pkiServices.verifyMessage();
 
 		BalanceResponse response = new BalanceResponse();
 		pkiServices.encryptMessage();
@@ -117,7 +117,7 @@ public class Server extends Thread {
 		accounts.add(new Account("00003","John Jones",32.60));
 		accounts.add(new Account("00004","John Williams",32.60));
 		accounts.add(new Account("00005","John Jabaar",32.60));
-		// this.pkiServices = new PKIServices();
+		this.pkiServices = new PKIServices("testServer");
 		try {
 			serverSocket = new ServerSocket(PORT);
 		} catch (IOException e) {

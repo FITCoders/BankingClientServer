@@ -5,14 +5,15 @@ package PKIServices;
 		import java.io.*;
 import java.security.*;
 /**
- * @author David
+ * 
  *
  */
 public class PKIServices {
 	
 	KeyPair keyPair;
+	String name;
 
-	public boolean generateKeyPair(){
+	private boolean generateKeyPair(){
 		System.out.println("Not implemented:PKIServices::generateKeyPair");
 		
 		try{
@@ -20,8 +21,8 @@ public class PKIServices {
 			keyGen.initialize(1024);
 			keyPair = keyGen.generateKeyPair();
 			
-		    File privateKeyFile = new File("c:\\users\\david\\documents\\private.key");
-			File publicKeyFile = new File("c:\\users\\david\\documents\\public.key");
+		    File privateKeyFile = new File("c:\\KeyStore\\"+this.name+"\\private.key");
+			File publicKeyFile = new File("c:\\KeyStore\\"+this.name+"\\public.key");
 			
 			// Create files to store public and private key
 			if (privateKeyFile.getParentFile() != null) {
@@ -58,8 +59,8 @@ public class PKIServices {
 		return false;
 	}
 	
-	public boolean validateMessage(){
-		System.out.println("Not implemented:PKIServices::validateMessage");
+	public boolean verifyMessage(){
+		System.out.println("Not implemented:PKIServices::verifyMessage");
 		return false;
 	}
 	
@@ -68,11 +69,13 @@ public class PKIServices {
 		return false;
 	}
 	
-	public boolean hashSHA256(byte []digest, String message){
+	public boolean hashSHA(byte []digest, String message, String algorithm){
 		MessageDigest localDigest;
+		byte []tempDigest = new byte[50];
 		try {
-			localDigest = MessageDigest.getInstance("SHA-256");
-			digest = localDigest.digest(message.getBytes("UTF-8"));
+			localDigest = MessageDigest.getInstance(algorithm);
+			tempDigest = localDigest.digest(message.getBytes("UTF-8"));
+			System.arraycopy(tempDigest, 0, digest, 0, tempDigest.length);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,8 +89,10 @@ public class PKIServices {
 	/**
 	 * 
 	 */
-	public PKIServices() {
-		System.out.println("Not implemented:PKIServices::Constructor");
+	public PKIServices(String name) {
+		System.out.println("Not finished:PKIServices::Constructor");
+		this.name = name;
+		this.generateKeyPair();
 
 		// TODO Auto-generated constructor stub
 	}

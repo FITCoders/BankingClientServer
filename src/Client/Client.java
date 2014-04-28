@@ -67,7 +67,7 @@ public class Client {
 	public Client(String accountNum) {
 		System.out.println("Client::Constructor");
 		this.accountNum = accountNum;
-		this.pkiServices = new PKIServices();
+		this.pkiServices = new PKIServices("testClient");
 	}
 	public void requestBalance() {
 		System.out.println("Client::requestBalance");
