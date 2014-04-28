@@ -76,7 +76,7 @@ public class Client {
 //        clientRequest.println(requestMessage.getCommand() + " " + requestMessage.getClientId());
         clientRequest.println(requestMessage.getClientId());
         clientRequest.flush();
-		pkiServices.signMessage();
+//		pkiServices.signMessage();
 		
 	}
 

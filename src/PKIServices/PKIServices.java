@@ -2,7 +2,7 @@ package PKIServices;
 /**
  * 
  */
-		import java.io.*;
+import java.io.*;
 import java.security.*;
 /**
  * 
@@ -54,12 +54,16 @@ public class PKIServices {
 		return true;
 	}
 	
-	public boolean signMessage(){
+	public boolean signMessage(byte[] message, byte[] digSig){
 		System.out.println("Not implemented:PKIServices::signMessage");
 		try {
 			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
-		} 
-		catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+			dsa.initSign(keyPair.getPrivate());
+		    dsa.update(message);
+			byte[] realSig = dsa.sign();
+			System.arraycopy(digSig, 0, realSig, 0, realSig.length);
+			} 
+		catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | SignatureException e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		} 
