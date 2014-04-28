@@ -45,9 +45,12 @@ public class AssignmentController {
 		}
 //		Account account;
 		String message = "Test";
-		byte[] cipherText = new byte[50];
+		byte[] cipherText = new byte[128];
+		byte[] plainText = new byte[50];
 		PKIServices pkiServices = new PKIServices("AssignmentController");
 		pkiServices.encryptMessage(message.getBytes(), cipherText);
+		pkiServices.decryptMessage(cipherText, plainText);
+		String decryptedMessage = new String(plainText);
 		if (choice.equals("S")) {
 			Server server = new Server();
 //			server.addAccount(account);

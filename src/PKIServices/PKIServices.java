@@ -112,12 +112,14 @@ public class PKIServices {
 	
 	public boolean encryptMessage(byte[] message, byte[] cipherText){
 		System.out.println("Not debugged:PKIServices::encryptMessage");
+		byte[] tempBuf = new byte[128];
 		try {
 			// get an RSA cipher object and print the provider
 			final Cipher cipher = Cipher.getInstance("RSA");
 			// encrypt the plain text using the public key
 			cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
-			cipherText = cipher.doFinal(message);
+			tempBuf = cipher.doFinal(message);
+			System.arraycopy( tempBuf, 0,cipherText, 0, tempBuf.length);
 		} 
 		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
@@ -161,13 +163,15 @@ public class PKIServices {
  * */	
 	
 	public boolean decryptMessage(byte[] cipherText, byte[] message) {
+		byte []tempBuf = new byte[128];
 		System.out.println("Not debugged:PKIServices::decryptMessage");
 		try {
 			// get an RSA cipher object and print the provider
 			final Cipher cipher = Cipher.getInstance("RSA");
 			// encrypt the plain text using the public key
 			cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
-			message = cipher.doFinal(cipherText);
+			tempBuf = cipher.doFinal(cipherText);
+			System.arraycopy(tempBuf, 0, message, 0, tempBuf.length);
 		} 
 		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
