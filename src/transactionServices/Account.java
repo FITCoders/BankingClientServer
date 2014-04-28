@@ -3,8 +3,6 @@
  */
 package transactionServices;
 
-import transactionServices.ClientInfo;
-
 /**
  * @author David
  *
@@ -12,6 +10,9 @@ import transactionServices.ClientInfo;
 public class Account {
 
 	ClientInfo client;
+	public String getId() {
+		return client.getClientId();
+	}
 
 	/**
 	 * 
