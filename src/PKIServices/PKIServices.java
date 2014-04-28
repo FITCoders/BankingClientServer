@@ -56,6 +56,13 @@ public class PKIServices {
 	
 	public boolean signMessage(){
 		System.out.println("Not implemented:PKIServices::signMessage");
+		try {
+			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
+		} 
+		catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            System.err.println("Caught exception " + e.toString());
+			e.printStackTrace();
+		} 
 		return false;
 	}
 	
@@ -77,7 +84,7 @@ public class PKIServices {
 			tempDigest = localDigest.digest(message.getBytes("UTF-8"));
 			System.arraycopy(tempDigest, 0, digest, 0, tempDigest.length);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
+            System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		} 
 		catch (Exception e) {
