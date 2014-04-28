@@ -4,6 +4,8 @@ package PKIServices;
  */
 import java.io.*;
 import java.security.*;
+
+import javax.crypto.Cipher;
 /**
  * 
  *
@@ -55,14 +57,14 @@ public class PKIServices {
 	}
 	
 	public boolean signMessage(byte[] message, byte[] digSig){
-		System.out.println("Not implemented:PKIServices::signMessage");
+		System.out.println("Not debugged:PKIServices::signMessage");
 		try {
 			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
 			dsa.initSign(keyPair.getPrivate());
 		    dsa.update(message);
 			byte[] realSig = dsa.sign();
 			System.arraycopy(digSig, 0, realSig, 0, realSig.length);
-			} 
+		} 
 		catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | SignatureException e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
@@ -70,13 +72,37 @@ public class PKIServices {
 		return false;
 	}
 	
-	public boolean verifyMessage(){
+	public boolean verifyMessage(byte []message, byte[]signature){
+		try {
+			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
+			dsa.initVerify(keyPair.getPublic());
+			dsa.update(message);
+			dsa.verify(signature);
+		} 
+		catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | SignatureException e) {
+            System.err.println("Caught exception " + e.toString());
+			e.printStackTrace();
+		}
 		System.out.println("Not implemented:PKIServices::verifyMessage");
 		return false;
 	}
 	
-	public boolean encryptMessage(){
+	public boolean encryptMessage(byte[] message){
 		System.out.println("Not implemented:PKIServices::encryptMessage");
+		byte[] cipherText = null;
+		try {
+			// get an RSA cipher object and print the provider
+			final Cipher cipher = Cipher.getInstance("RSA");
+			// encrypt the plain text using the public key
+			cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
+			cipherText = cipher.doFinal(message);
+		} 
+		catch (Exception e) {
+            System.err.println("Caught exception " + e.toString());
+			e.printStackTrace();
+		}
+
+
 		return false;
 	}
 	

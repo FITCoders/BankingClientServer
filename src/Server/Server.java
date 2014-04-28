@@ -101,10 +101,10 @@ public class Server extends Thread {
 
 	public boolean receive() {
 		System.out.println("Not implemented:Server::receive");
-		pkiServices.verifyMessage();
+//		pkiServices.verifyMessage();
 
 		BalanceResponse response = new BalanceResponse();
-		pkiServices.encryptMessage();
+//		pkiServices.encryptMessage();
 
 		return false;
 	}
