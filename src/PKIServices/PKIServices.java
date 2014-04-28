@@ -12,7 +12,6 @@ import javax.crypto.Cipher;
  * 2. Digital Signature
  * 3. Secure Hash Algorithms (SHA-1 and SHA-256)
  * 4. RSA encryption and decryption
- *
  */
 public class PKIServices {
 	
@@ -21,7 +20,8 @@ public class PKIServices {
 
 /*
  * 
- * generateKeyPair generates 1024-bit RSA public and private keys
+ * generateKeyPair generates 1024-bit RSA public and private keys...the keys are saved in a keystore 
+ * for future feature expansion...
  * 
  * 
  * */	
@@ -66,6 +66,12 @@ public class PKIServices {
 		
 		return true;
 	}
+	
+/*
+ * 
+ * signMessage signs a message using the 1024 bit RSA public key and SHA1 with DSA
+ * 
+ * */
 	
 	public boolean signMessage(byte[] message, byte[] digSig){
 		System.out.println("Not debugged:PKIServices::signMessage");
