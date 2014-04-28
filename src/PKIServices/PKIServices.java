@@ -103,6 +103,12 @@ public class PKIServices {
 		}
 		return false;
 	}
+
+/*
+ * Encrypt using 1024 bit RSA public key
+ * 
+ * 
+ * */	
 	
 	public boolean encryptMessage(byte[] message, byte[] cipherText){
 		System.out.println("Not debugged:PKIServices::encryptMessage");
@@ -117,7 +123,7 @@ public class PKIServices {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 	
 	public boolean hashSHA(byte []digest, String message, String algorithm){
@@ -148,6 +154,12 @@ public class PKIServices {
 		// TODO Auto-generated constructor stub
 	}
 
+/*
+ * 
+ * decryptMessage with 1024 bit RSA private key...
+ * 
+ * */	
+	
 	public boolean decryptMessage(byte[] cipherText, byte[] message) {
 		System.out.println("Not debugged:PKIServices::decryptMessage");
 		try {

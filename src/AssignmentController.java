@@ -43,7 +43,11 @@ public class AssignmentController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		Account account; 
+//		Account account;
+		String message = "Test";
+		byte[] cipherText = new byte[50];
+		PKIServices pkiServices = new PKIServices("AssignmentController");
+		pkiServices.encryptMessage(message.getBytes(), cipherText);
 		if (choice.equals("S")) {
 			Server server = new Server();
 //			server.addAccount(account);
