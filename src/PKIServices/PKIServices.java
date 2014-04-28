@@ -9,8 +9,8 @@ import javax.crypto.Cipher;
 /**
  * This class encapsulates the PKI services required to complete this assignment...
  * 1. Key pair generation (1024 bit RSA keys)
- * 2. Digital Signature
- * 3. Secure Hash Algorithms (SHA-1 and SHA-256)
+ * 2. Digital Signatures (using proprietary algorithm instead of DSA to reduce key management)
+ * 3. Secure Hash Algorithms (SHA-256)
  * 4. RSA encryption and decryption
  */
 public class PKIServices {
@@ -68,21 +68,17 @@ public class PKIServices {
 	
 /*
  * 
- * signMessage signs a message using the 1024 bit RSA public key and SHA1 with DSA
+ * signMessage uses a proprietary algorithm, which uses RSA keys to encrypt SHA-256 hashes instead of DSA
+ * keys that encrypt SHA-1 or SHA-256 hashes.
  * 
- * */
+ * */	
 	
 	public boolean signMessage(byte[] message, byte[] digSig){
 		System.out.println("Not debugged:PKIServices::signMessage");
 		byte[] digest = new byte[50];
 		byte[] tempDigSig = new byte[128];
 		
-		try {
-/*			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
-			dsa.initSign(keyPair.getPrivate());
-		    dsa.update(message);
-			byte[] realSig = dsa.sign();
-*/			
+		try {	
 			this.hashSHA(digest, message,  "SHA-256");
 			this.encryptMessage(digest, tempDigSig);
 			System.arraycopy(tempDigSig, 0, digSig, 0, tempDigSig.length);
@@ -94,15 +90,19 @@ public class PKIServices {
 		return false;
 	}
 	
+/*
+ * 
+ * verifyMessage reverses the proprietary algorithm, using RSA keys to encrypt SHA-256 hashes instead of DSA
+ * keys that decrypt SHA-1 or SHA-256 hashes.
+ * 
+ * */	
+	
+	
 	public boolean verifyMessage(byte []message, byte[]digSig){
 		boolean returnVal = true;
 		byte[] sigHash = new byte[128];
 		byte[] tempBuf = new byte[128];
 		try {
-			/*Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
-			dsa.initVerify(keyPair.getPublic());
-			dsa.update(message);
-			dsa.verify(signature);*/
 			this.decryptMessage(digSig, sigHash);
 			this.hashSHA(tempBuf, message, "SHA-256");
 			for (int i = 0; i < 32; i++){
@@ -121,7 +121,8 @@ public class PKIServices {
 
 /*
  * Encrypt using 1024 bit RSA public key
- * ...the result is copied into a byte array passed in by the sender...
+ * the plaintext is passed by the caller
+ * ...the ciphertext is copied into a byte array passed in by the caller...
  * 
  * */	
 	
@@ -155,7 +156,7 @@ public class PKIServices {
 		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
         }
-		return false;
+		return true;
 	}
 	
 	/**
@@ -170,15 +171,15 @@ public class PKIServices {
 /*
  * 
  * decryptMessage with 1024 bit RSA private key...
+ * the ciphertext is sent by the caller
+ * the plaintext is returned in a parameter passed by the caller
  * 
  * */	
 	
 	public boolean decryptMessage(byte[] cipherText, byte[] message) {
 		byte []tempBuf = new byte[128];
 		try {
-			// get an RSA cipher object and print the provider
 			final Cipher cipher = Cipher.getInstance("RSA");
-			// encrypt the plain text using the public key
 			cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
 			tempBuf = cipher.doFinal(cipherText);
 			System.arraycopy(tempBuf, 0, message, 0, tempBuf.length);
@@ -187,7 +188,7 @@ public class PKIServices {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 
 }
