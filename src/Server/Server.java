@@ -27,7 +27,7 @@ public class Server extends Thread {
 	 * 
 	 */
 
-	List<Account> accounts;
+	static Account accounts[];
 	PKIServices pkiServices;
 	private static ServerSocket serverSocket;
 	private static final int PORT = 2349;
@@ -67,8 +67,12 @@ public class Server extends Thread {
 							socket.getInputStream()));
 					pw = new PrintWriter(socket.getOutputStream());
 					String accountId = br.readLine();
-
-					pw.println(accountId);
+					
+					if (isValidAccount(accountId)) {
+						pw.println(accountId);
+					} else {
+						pw.println(accountId + " is not a valid account ID");
+					}
 					pw.flush();
 
 					System.out.println("Client " + connectionNumber + " Data: "
@@ -94,6 +98,17 @@ public class Server extends Thread {
 		}
 	}
 
+	public boolean isValidAccount(String accountId) {
+		for (int i=0;i<5;i++) {
+			if (accounts[i].getId().equals(accountId)) {
+				return true;
+			}
+		}
+//		for (int i;i<accounts.size();i++) {
+//			if (accounts[i].)
+		return false;
+	}
+	
 	public void addAccount(Account account) {
 		System.out.println("Not implemented:Server::addAccount");
 		return;
@@ -101,23 +116,24 @@ public class Server extends Thread {
 
 	public boolean receive() {
 		System.out.println("Not implemented:Server::receive");
-//		pkiServices.verifyMessage();
+		pkiServices.validateMessage();
 
 		BalanceResponse response = new BalanceResponse();
-//		pkiServices.encryptMessage();
+		pkiServices.encryptMessage();
 
 		return false;
 	}
 
 	public Server() {
 		System.out.println("Server::Constructor");
-		accounts = new ArrayList<Account>();
-		accounts.add(new Account("00001","John Wiggins",32.60));
-		accounts.add(new Account("00002","John Smith",32.60));
-		accounts.add(new Account("00003","John Jones",32.60));
-		accounts.add(new Account("00004","John Williams",32.60));
-		accounts.add(new Account("00005","John Jabaar",32.60));
-		this.pkiServices = new PKIServices("testServer");
+//		accounts = new ArrayList<Account>();
+		accounts = new Account[5];
+		accounts[0] = new Account("00001","John Wiggins",32.60);
+		accounts[1] = new Account("00002","John Smith",32.60);
+		accounts[2] = new Account("00003","John Jones",32.60);
+		accounts[3] = new Account("00004","John Williams",32.60);
+		accounts[4] = new Account("00005","John Jabaar",32.60);
+		// this.pkiServices = new PKIServices();
 		try {
 			serverSocket = new ServerSocket(PORT);
 		} catch (IOException e) {
