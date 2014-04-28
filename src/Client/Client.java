@@ -73,17 +73,14 @@ public class Client {
 		System.out.println("Client::requestBalance");
 		
 		BalanceRequest requestMessage = new BalanceRequest(accountNum);
-        clientRequest.println(requestMessage.getCommand() + " " + requestMessage.getClientId());
+//        clientRequest.println(requestMessage.getCommand() + " " + requestMessage.getClientId());
+        clientRequest.println(requestMessage.getClientId());
         clientRequest.flush();
 		pkiServices.signMessage();
 		
 	}
 
 }
-
-
-
-
 
 
 

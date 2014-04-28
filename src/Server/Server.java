@@ -66,9 +66,9 @@ public class Server extends Thread {
 					br = new BufferedReader(new InputStreamReader(
 							socket.getInputStream()));
 					pw = new PrintWriter(socket.getOutputStream());
-					data = br.readLine();
+					String accountId = br.readLine();
 
-					pw.println(data);
+					pw.println(accountId);
 					pw.flush();
 
 					System.out.println("Client " + connectionNumber + " Data: "
