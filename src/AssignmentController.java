@@ -52,6 +52,7 @@ public class AssignmentController {
 		pkiServices.decryptMessage(cipherText, plainText);
 		String decryptedMessage = new String(plainText);
 		pkiServices.signMessage(message.getBytes(), cipherText);
+		pkiServices.verifyMessage(message.getBytes(), cipherText);
 		if (choice.equals("S")) {
 			Server server = new Server();
 //			server.addAccount(account);

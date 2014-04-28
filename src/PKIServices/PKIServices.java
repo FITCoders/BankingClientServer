@@ -95,18 +95,28 @@ public class PKIServices {
 	}
 	
 	public boolean verifyMessage(byte []message, byte[]digSig){
-		System.out.println("Not debugged:PKIServices::verifyMessage");
-/*		try {
-			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
+		boolean returnVal = true;
+		byte[] sigHash = new byte[128];
+		byte[] tempBuf = new byte[128];
+		try {
+			/*Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
 			dsa.initVerify(keyPair.getPublic());
 			dsa.update(message);
-			dsa.verify(signature);
+			dsa.verify(signature);*/
+			this.decryptMessage(digSig, sigHash);
+			this.hashSHA(tempBuf, message, "SHA-256");
+			for (int i = 0; i < 32; i++){
+				if (tempBuf[i] != sigHash[i]){
+					returnVal = false;
+					break;
+				}
+			}
 		} 
-		catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | SignatureException e) {
+		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
-		}*/
-		return false;
+		}
+		return returnVal;
 	}
 
 /*
