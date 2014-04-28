@@ -56,7 +56,7 @@ public class Client {
 			e.printStackTrace();
 		}
 	
-		pkiServices.decryptMessage();
+//		pkiServices.decryptMessage();
 		
 		return false;
 	}

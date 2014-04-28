@@ -7,7 +7,9 @@ import java.security.*;
 
 import javax.crypto.Cipher;
 /**
- * 
+ * This class encapsulates the PKI services required to complete this assignment...
+ * 1. Key pair generation
+ * 2. Digital Signature
  *
  */
 public class PKIServices {
@@ -16,7 +18,7 @@ public class PKIServices {
 	String name;
 
 	private boolean generateKeyPair(){
-		System.out.println("Not implemented:PKIServices::generateKeyPair");
+		System.out.println("Not finished...implement keystore:PKIServices::generateKeyPair");
 		
 		try{
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
@@ -73,6 +75,7 @@ public class PKIServices {
 	}
 	
 	public boolean verifyMessage(byte []message, byte[]signature){
+		System.out.println("Not debugged:PKIServices::verifyMessage");
 		try {
 			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
 			dsa.initVerify(keyPair.getPublic());
@@ -83,13 +86,11 @@ public class PKIServices {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		}
-		System.out.println("Not implemented:PKIServices::verifyMessage");
 		return false;
 	}
 	
-	public boolean encryptMessage(byte[] message){
-		System.out.println("Not implemented:PKIServices::encryptMessage");
-		byte[] cipherText = null;
+	public boolean encryptMessage(byte[] message, byte[] cipherText){
+		System.out.println("Not debugged:PKIServices::encryptMessage");
 		try {
 			// get an RSA cipher object and print the provider
 			final Cipher cipher = Cipher.getInstance("RSA");
@@ -101,8 +102,6 @@ public class PKIServices {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		}
-
-
 		return false;
 	}
 	
@@ -134,9 +133,19 @@ public class PKIServices {
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean decryptMessage() {
-		// TODO Auto-generated method stub
-		System.out.println("Not implemented:PKIServices::decryptMessage");
+	public boolean decryptMessage(byte[] cipherText, byte[] message) {
+		System.out.println("Not debugged:PKIServices::decryptMessage");
+		try {
+			// get an RSA cipher object and print the provider
+			final Cipher cipher = Cipher.getInstance("RSA");
+			// encrypt the plain text using the public key
+			cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+			message = cipher.doFinal(cipherText);
+		} 
+		catch (Exception e) {
+            System.err.println("Caught exception " + e.toString());
+			e.printStackTrace();
+		}
 		return false;
 	}
 
