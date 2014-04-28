@@ -23,7 +23,6 @@ public class PKIServices {
  * generateKeyPair generates 1024-bit RSA public and private keys...the keys are saved in a keystore 
  * for future feature expansion...
  * 
- * 
  * */	
 	
 	private boolean generateKeyPair(){
@@ -75,23 +74,29 @@ public class PKIServices {
 	
 	public boolean signMessage(byte[] message, byte[] digSig){
 		System.out.println("Not debugged:PKIServices::signMessage");
+		byte[] digest = new byte[50];
+		byte[] tempDigSig = new byte[128];
+		
 		try {
-			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
+/*			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
 			dsa.initSign(keyPair.getPrivate());
 		    dsa.update(message);
 			byte[] realSig = dsa.sign();
-			System.arraycopy(digSig, 0, realSig, 0, realSig.length);
+*/			
+			this.hashSHA(digest, message,  "SHA-256");
+			this.encryptMessage(digest, tempDigSig);
+			System.arraycopy(tempDigSig, 0, digSig, 0, tempDigSig.length);
 		} 
-		catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | SignatureException e) {
+		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		} 
 		return false;
 	}
 	
-	public boolean verifyMessage(byte []message, byte[]signature){
+	public boolean verifyMessage(byte []message, byte[]digSig){
 		System.out.println("Not debugged:PKIServices::verifyMessage");
-		try {
+/*		try {
 			Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");
 			dsa.initVerify(keyPair.getPublic());
 			dsa.update(message);
@@ -100,13 +105,13 @@ public class PKIServices {
 		catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | SignatureException e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
-		}
+		}*/
 		return false;
 	}
 
 /*
  * Encrypt using 1024 bit RSA public key
- * 
+ * ...the result is copied into a byte array passed in by the sender...
  * 
  * */	
 	
@@ -114,12 +119,10 @@ public class PKIServices {
 		System.out.println("Not debugged:PKIServices::encryptMessage");
 		byte[] tempBuf = new byte[128];
 		try {
-			// get an RSA cipher object and print the provider
 			final Cipher cipher = Cipher.getInstance("RSA");
-			// encrypt the plain text using the public key
 			cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
 			tempBuf = cipher.doFinal(message);
-			System.arraycopy( tempBuf, 0,cipherText, 0, tempBuf.length);
+			System.arraycopy(tempBuf, 0,cipherText, 0, tempBuf.length);
 		} 
 		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
@@ -128,12 +131,12 @@ public class PKIServices {
 		return true;
 	}
 	
-	public boolean hashSHA(byte []digest, String message, String algorithm){
+	public boolean hashSHA(byte []digest, byte[] message, String algorithm){
 		MessageDigest localDigest;
 		byte []tempDigest = new byte[50];
 		try {
 			localDigest = MessageDigest.getInstance(algorithm);
-			tempDigest = localDigest.digest(message.getBytes("UTF-8"));
+			tempDigest = localDigest.digest(message);
 			System.arraycopy(tempDigest, 0, digest, 0, tempDigest.length);
 		} catch (NoSuchAlgorithmException e) {
             System.err.println("Caught exception " + e.toString());
@@ -152,8 +155,6 @@ public class PKIServices {
 		System.out.println("Not finished:PKIServices::Constructor");
 		this.name = name;
 		this.generateKeyPair();
-
-		// TODO Auto-generated constructor stub
 	}
 
 /*
@@ -164,7 +165,6 @@ public class PKIServices {
 	
 	public boolean decryptMessage(byte[] cipherText, byte[] message) {
 		byte []tempBuf = new byte[128];
-		System.out.println("Not debugged:PKIServices::decryptMessage");
 		try {
 			// get an RSA cipher object and print the provider
 			final Cipher cipher = Cipher.getInstance("RSA");
