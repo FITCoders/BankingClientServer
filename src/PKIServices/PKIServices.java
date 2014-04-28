@@ -8,8 +8,10 @@ import java.security.*;
 import javax.crypto.Cipher;
 /**
  * This class encapsulates the PKI services required to complete this assignment...
- * 1. Key pair generation
+ * 1. Key pair generation (1024 bit RSA keys)
  * 2. Digital Signature
+ * 3. Secure Hash Algorithms (SHA-1 and SHA-256)
+ * 4. RSA encryption and decryption
  *
  */
 public class PKIServices {
@@ -17,6 +19,13 @@ public class PKIServices {
 	KeyPair keyPair;
 	String name;
 
+/*
+ * 
+ * generateKeyPair generates 1024-bit RSA public and private keys
+ * 
+ * 
+ * */	
+	
 	private boolean generateKeyPair(){
 		System.out.println("Not finished...implement keystore:PKIServices::generateKeyPair");
 		
