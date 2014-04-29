@@ -5,14 +5,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import messages.*;
 import Client.*;
 import PKIServices.*;
 import Server.*;
-import transactionServices.*;
 
 /**
- * @author David
+ * @author David 
  * 
  */
 public class AssignmentController {
@@ -24,23 +22,19 @@ public class AssignmentController {
 	Server server;
 
 	public AssignmentController() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out
-				.println("Not implemented:main () finally we have a round trip...and now at long last I think it works");
 		System.out.println("Enter C to run client or S to run server : ");
 		BufferedReader userInput = new BufferedReader(new InputStreamReader(
 				System.in));
 		try {
 			choice = userInput.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+            System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		}
 //		Account account;
@@ -55,15 +49,12 @@ public class AssignmentController {
 		pkiServices.verifyMessage(message.getBytes(), cipherText);
 		if (choice.equalsIgnoreCase("S")) {
 			Server server = new Server();
-//			server.addAccount(account);
-//		    server.start();
-//			server.receive();
 		} else if (choice.equalsIgnoreCase("C")){
 			try {
 				System.out.println("Enter Account Number : ");
 				accountNum = userInput.readLine();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+	            System.err.println("Caught exception " + e.toString());
 				e.printStackTrace();
 			}
 			Client client = new Client(accountNum);
