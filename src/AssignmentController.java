@@ -4,6 +4,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 
 import Client.*;
 import PKIServices.*;
@@ -47,6 +49,12 @@ public class AssignmentController {
 		String decryptedMessage = new String(plainText);
 		pkiServices.signMessage(message.getBytes(), cipherText);
 		pkiServices.verifyMessage(message.getBytes(), cipherText);
+		PublicKey key = null;
+//		try {
+//			key = pkiServices.caGetPublicKey("Server");
+//		} catch (InvalidKeySpecException e1) {
+//			e1.printStackTrace();
+//		}
 		if (choice.equalsIgnoreCase("S")) {
 			Server server = new Server();
 		} else if (choice.equalsIgnoreCase("C")){
