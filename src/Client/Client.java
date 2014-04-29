@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import utilities.Serializer;
 import messages.*;
 import PKIServices.*;
 
@@ -39,11 +40,12 @@ public class Client {
                 System.out.println("Connected");
                 outputStream = new ObjectOutputStream(socket.getOutputStream());
                 BalanceRequest balanceRequest = new BalanceRequest(accountNum);
+                pkiServices.signMessage(Serializer.serialize(balanceRequest), balanceRequest.signature);
                 System.out.println("Object to be written = " + balanceRequest.getClientId());
                 outputStream.writeObject(balanceRequest);
 	            try {
 		            inputStream = new ObjectInputStream(socket.getInputStream());
-					balanceResponse = (BalanceResponse) inputStream.readObject();
+					balanceResponse = (BalanceResponse) Serializer.deserialize((byte[]) inputStream.readObject());
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -5,20 +5,16 @@ package Server;
  */
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import messages.*;
 import transactionServices.*;
+import utilities.Serializer;
 import PKIServices.*;
 
 /**
@@ -33,7 +29,7 @@ public class Server extends Thread {
 	static Account accounts[];
 	PKIServices pkiServices;
 	private static ServerSocket serverSocket;
-//	private static final int PORT = 2346;
+	private static final int PORT = 4446;
 	private static int connectionNumber = 0;
 
 	public void run() {
@@ -64,7 +60,7 @@ public class Server extends Thread {
 
 	    public void communicate() {
 	        try {
-//	            serverSocket = new ServerSocket(4446);
+//	            serverSocket = new ServerSocket(PORT);
 //	            socket = serverSocket.accept();
 	            System.out.println("Connected");
 	            inStream = new ObjectInputStream(socket.getInputStream());
@@ -76,7 +72,7 @@ public class Server extends Thread {
 	            	setResponseInfo(balanceResponse);
 	                outputStream = new ObjectOutputStream(socket.getOutputStream());
 	                System.out.println(balanceResponse.getClientBalance());
-	                outputStream.writeObject(balanceResponse);
+	                outputStream.writeObject(Serializer.serialize(balanceResponse));
 	                
 	            } else {
 	            	System.out.println("Invalid account number : " + balanceRequest.getClientId());
@@ -94,45 +90,7 @@ public class Server extends Thread {
 
 
 		public void run() {
-
-			PrintWriter pw = null;
-			BufferedReader br = null;
 			communicate();
-/*			try {
-				String data = null;
-				try {
-					br = new BufferedReader(new InputStreamReader(
-							socket.getInputStream()));
-					pw = new PrintWriter(socket.getOutputStream());
-					String accountId = br.readLine();
-					
-					if (isValidAccount(accountId)) {
-						pw.println(accountId);
-					} else {
-						pw.println(accountId + " is not a valid account ID");
-					}
-					pw.flush();
-
-					System.out.println("Client " + connectionNumber + " Data: "
-							+ data);
-				} catch (IOException ioe) {
-					ioe.printStackTrace();
-				}
-				pw.close();
-				br.close();
-				socket.close();
-			} catch (IOException ex) {
-				Logger.getLogger(Server.class.getName()).log(Level.SEVERE,
-						null, ex);
-				pw.close();
-				try {
-					br.close();
-					socket.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} */
 		}
 	}
 
@@ -153,17 +111,6 @@ public class Server extends Thread {
 		}
 		return false;
 	}
-	
-
-	public boolean receive() {
-//		pkiServices.validateMessage();
-
-		BalanceResponse response = new BalanceResponse();
-//		pkiServices.encryptMessage();
-
-		return false;
-	}
-
 	public Server() {
 		System.out.println("Server::Constructor");
 		this.pkiServices = new PKIServices("Server");
@@ -175,12 +122,11 @@ public class Server extends Thread {
 		accounts[4] = new Account("00005","John Jabaar",324444.60);
 		// this.pkiServices = new PKIServices();
 		try {
-			serverSocket = new ServerSocket(4446);
+			serverSocket = new ServerSocket(PORT);
 		} catch (IOException e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		} 
 		start();
 	}
-
 }

@@ -6,10 +6,11 @@ import transactionServices.ClientInfo;
 
 public class BalanceRequest extends BankingMessage implements Serializable {
 
+	public byte []signature;
 	public BalanceRequest(String clientId) {
-		System.out.println("BalanceRequest::Constructor");
 		command = "REQUEST_BALANCE";
 		client = new ClientInfo(clientId);
+		signature = new byte[50];
 	}
 
 	public String getCommand() {
