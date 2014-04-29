@@ -4,8 +4,9 @@ package PKIServices;
  */
 import java.io.*;
 import java.security.*;
-
 import javax.crypto.Cipher;
+import java.security.spec.*;
+
 /**
  * This class encapsulates the PKI services required to complete this assignment...
  * 1. Key pair generation (1024 bit RSA keys)
@@ -186,4 +187,33 @@ public class PKIServices {
 		return true;
 	}
 
+/*
+* 
+* caGetPublicKey emulates in a very simplistic fashion transfer of a public key...
+* 
+* */	
+	
+	public static PublicKey caGetPublicKey(String name) throws InvalidKeySpecException {
+		File publicKeyFile = new File("c:\\KeyStore\\"+name+"\\public.key");
+		FileInputStream fileInStream = null;
+		byte[] keyBytes = null;
+	    KeyFactory kf = null;
+	    X509EncodedKeySpec spec = null;
+		try {
+			fileInStream = new FileInputStream(publicKeyFile);
+		    DataInputStream dataInputStream = new DataInputStream(fileInStream);
+		    keyBytes = new byte[(int)publicKeyFile.length()];
+		    dataInputStream.readFully(keyBytes);
+		    dataInputStream.close();
+		    spec = new X509EncodedKeySpec(keyBytes);
+			kf = KeyFactory.getInstance("RSA");
+		} 
+		catch (IOException | NoSuchAlgorithmException e) {
+	        System.err.println("Caught exception " + e.toString());
+			e.printStackTrace();
+		}
+	    return kf.generatePublic(spec);
+	}
+	
+	
 }
