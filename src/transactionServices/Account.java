@@ -13,6 +13,9 @@ public class Account {
 	public String getId() {
 		return client.getClientId();
 	}
+	public double getBalance() {
+		return client.getClientBalance();
+	}
 
 	/**
 	 * 

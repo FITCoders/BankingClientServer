@@ -30,6 +30,7 @@ public class Client {
     BufferedReader serverResponse;
     PrintWriter clientRequest;
 	PKIServices pkiServices;
+	BalanceResponse balanceResponse;
 	
     public void connectToServer() {
     	 
@@ -40,7 +41,14 @@ public class Client {
                 BalanceRequest balanceRequest = new BalanceRequest(accountNum);
                 System.out.println("Object to be written = " + balanceRequest.getClientId());
                 outputStream.writeObject(balanceRequest);
- 
+	            try {
+		            inputStream = new ObjectInputStream(socket.getInputStream());
+					balanceResponse = (BalanceResponse) inputStream.readObject();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                System.out.println("Object received = " + balanceResponse.getClientBalance());
  
             } catch (SocketException se) {
                 se.printStackTrace();

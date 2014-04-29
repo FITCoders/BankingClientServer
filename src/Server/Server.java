@@ -55,6 +55,7 @@ public class Server extends Thread {
 
 		private Socket socket;
 	    private ObjectInputStream inStream = null;
+	    private ObjectOutputStream outputStream = null;
 
 		public ConnectionListener(Socket socketValue, int connectionNumber) {
 			socket = socketValue;
@@ -71,6 +72,12 @@ public class Server extends Thread {
 	            BalanceRequest balanceRequest = (BalanceRequest) inStream.readObject();
 	            if (isValidAccount(balanceRequest.getClientId())) {
 	            	System.out.println("Object received = " + balanceRequest.getClientId());
+	            	BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
+	            	setResponseInfo(balanceResponse);
+	                outputStream = new ObjectOutputStream(socket.getOutputStream());
+	                System.out.println(balanceResponse.getClientBalance());
+	                outputStream.writeObject(balanceResponse);
+	                
 	            } else {
 	            	System.out.println("Invalid account number : " + balanceRequest.getClientId());
 	            }
@@ -135,8 +142,15 @@ public class Server extends Thread {
 				return true;
 			}
 		}
-//		for (int i;i<accounts.size();i++) {
-//			if (accounts[i].)
+		return false;
+	}
+
+	public boolean setResponseInfo(BalanceResponse response) {
+		for (int i=0;i<5;i++) {
+			if (accounts[i].getId().equals(response.getClientId())) {
+				response.setClientBalance(accounts[i].getBalance());;
+			}
+		}
 		return false;
 	}
 	
@@ -155,10 +169,10 @@ public class Server extends Thread {
 		this.pkiServices = new PKIServices("Server");
 		accounts = new Account[5];
 		accounts[0] = new Account("00001","John Wiggins",32.60);
-		accounts[1] = new Account("00002","John Smith",32.60);
-		accounts[2] = new Account("00003","John Jones",32.60);
-		accounts[3] = new Account("00004","John Williams",32.60);
-		accounts[4] = new Account("00005","John Jabaar",32.60);
+		accounts[1] = new Account("00002","John Smith",33.60);
+		accounts[2] = new Account("00003","John Jones",34.60);
+		accounts[3] = new Account("00004","John Williams",35.60);
+		accounts[4] = new Account("00005","John Jabaar",324444.60);
 		// this.pkiServices = new PKIServices();
 		try {
 			serverSocket = new ServerSocket(4446);
