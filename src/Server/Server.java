@@ -140,13 +140,8 @@ public class Server extends Thread {
 		return false;
 	}
 	
-	public void addAccount(Account account) {
-		System.out.println("Not implemented:Server::addAccount");
-		return;
-	}
 
 	public boolean receive() {
-		System.out.println("Not implemented:Server::receive");
 //		pkiServices.validateMessage();
 
 		BalanceResponse response = new BalanceResponse();
@@ -157,7 +152,7 @@ public class Server extends Thread {
 
 	public Server() {
 		System.out.println("Server::Constructor");
-//		accounts = new ArrayList<Account>();
+		this.pkiServices = new PKIServices("Server");
 		accounts = new Account[5];
 		accounts[0] = new Account("00001","John Wiggins",32.60);
 		accounts[1] = new Account("00002","John Smith",32.60);
@@ -168,7 +163,7 @@ public class Server extends Thread {
 		try {
 			serverSocket = new ServerSocket(4446);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+            System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		} 
 		start();
