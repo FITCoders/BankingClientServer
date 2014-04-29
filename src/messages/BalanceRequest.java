@@ -1,8 +1,10 @@
 package messages;
 
+import java.io.Serializable;
+
 import transactionServices.ClientInfo;
 
-public class BalanceRequest extends BankingMessage {
+public class BalanceRequest extends BankingMessage implements Serializable {
 
 	public BalanceRequest(String clientId) {
 		System.out.println("BalanceRequest::Constructor");

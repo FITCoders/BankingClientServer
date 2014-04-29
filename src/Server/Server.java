@@ -68,8 +68,12 @@ public class Server extends Thread {
 	            System.out.println("Connected");
 	            inStream = new ObjectInputStream(socket.getInputStream());
 	 
-	            ClientInfo clientInfo = (ClientInfo) inStream.readObject();
-	            System.out.println("Object received = " + clientInfo.getClientId());
+	            BalanceRequest balanceRequest = (BalanceRequest) inStream.readObject();
+	            if (isValidAccount(balanceRequest.getClientId())) {
+	            	System.out.println("Object received = " + balanceRequest.getClientId());
+	            } else {
+	            	System.out.println("Invalid account number : " + balanceRequest.getClientId());
+	            }
 	            socket.close();
 	 
 	        } catch (SocketException se) {

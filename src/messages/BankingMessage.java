@@ -1,4 +1,6 @@
 package messages;
+import java.io.Serializable;
+
 import transactionServices.ClientInfo;
 /**
  * 
@@ -8,7 +10,7 @@ import transactionServices.ClientInfo;
  * @author David
  *
  */
-public abstract class BankingMessage {
+public abstract class BankingMessage implements Serializable {
 	
 	String command;
 	ClientInfo client; // = new ClientInfo;

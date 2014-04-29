@@ -40,9 +40,9 @@ public class Client {
                 System.out.println("Connected");
  //               isConnected = true;
                 outputStream = new ObjectOutputStream(socket.getOutputStream());
-                ClientInfo clientInfo = new ClientInfo(accountNum);
-                System.out.println("Object to be written = " + clientInfo);
-                outputStream.writeObject(clientInfo);
+                BalanceRequest balanceRequest = new BalanceRequest(accountNum);
+                System.out.println("Object to be written = " + balanceRequest.getClientId());
+                outputStream.writeObject(balanceRequest);
  
  
             } catch (SocketException se) {
