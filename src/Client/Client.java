@@ -13,12 +13,11 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import transactionServices.ClientInfo;
 import messages.*;
 import PKIServices.*;
 
 /**
- * @author David
+ * @author David 
  *
  */
 public class Client {
@@ -34,11 +33,9 @@ public class Client {
 	
     public void connectToServer() {
     	 
- //       while (!isConnected) {
             try {
                 socket = new Socket("localHost", 4446);
                 System.out.println("Connected");
- //               isConnected = true;
                 outputStream = new ObjectOutputStream(socket.getOutputStream());
                 BalanceRequest balanceRequest = new BalanceRequest(accountNum);
                 System.out.println("Object to be written = " + balanceRequest.getClientId());
@@ -47,11 +44,9 @@ public class Client {
  
             } catch (SocketException se) {
                 se.printStackTrace();
-                // System.exit(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        }
     }
     public boolean connectToServerOld(){
 		System.out.println("Client::connectToServer");
@@ -59,10 +54,10 @@ public class Client {
 		try {
 			socket = new Socket(HOST, PORT);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+            System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+            System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		}
         
@@ -76,38 +71,17 @@ public class Client {
  		return false;
 	}
 	
-/*	public boolean receive() {
-		System.out.println("Not implemented:Client::receive");
-        try {
-			System.out.println("Server response: " + serverResponse.readLine());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
-	
-//		pkiServices.decryptMessage();
-		
-		return false;
-	} */
-
 	/**
 	 * 
 	 */
 	public Client(String accountNum) {
-		System.out.println("Client::Constructor");
 		this.accountNum = accountNum;
 		this.pkiServices = new PKIServices("testClient");
 	}
 	public void requestBalance() {
-		System.out.println("Client::requestBalance");
-		
-		BalanceRequest requestMessage = new BalanceRequest(accountNum);
-//        clientRequest.println(requestMessage.getCommand() + " " + requestMessage.getClientId());
-//        clientRequest.println(requestMessage.getClientId());
-//        clientRequest.flush();
 //		pkiServices.signMessage();
-		
+		BalanceRequest requestMessage = new BalanceRequest(accountNum);
 	}
-
 }
 
 
