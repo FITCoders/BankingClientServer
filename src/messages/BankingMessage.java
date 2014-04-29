@@ -25,7 +25,6 @@ public abstract class BankingMessage implements Serializable {
 	}
 
 	public BankingMessage(String clientId) {
-		System.out.println("BankingMessage::Constructor");
 		client.setClientId(clientId);
 
 		// TODO Auto-generated constructor stub
