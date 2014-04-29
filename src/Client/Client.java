@@ -6,10 +6,14 @@ package Client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import transactionServices.ClientInfo;
 import messages.*;
 import PKIServices.*;
 
@@ -20,12 +24,36 @@ import PKIServices.*;
 public class Client {
     private static final String HOST = "localhost";
     private static final int PORT = 2349;
+    private Socket socket = null;
+    private ObjectInputStream inputStream = null;
+    private ObjectOutputStream outputStream = null;
     String accountNum;
     BufferedReader serverResponse;
     PrintWriter clientRequest;
 	PKIServices pkiServices;
 	
-	public boolean connectToServer(){
+    public void connectToServer() {
+    	 
+ //       while (!isConnected) {
+            try {
+                socket = new Socket("localHost", 4446);
+                System.out.println("Connected");
+ //               isConnected = true;
+                outputStream = new ObjectOutputStream(socket.getOutputStream());
+                ClientInfo clientInfo = new ClientInfo(accountNum);
+                System.out.println("Object to be written = " + clientInfo);
+                outputStream.writeObject(clientInfo);
+ 
+ 
+            } catch (SocketException se) {
+                se.printStackTrace();
+                // System.exit(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//        }
+    }
+    public boolean connectToServerOld(){
 		System.out.println("Client::connectToServer");
         Socket socket = null;
 		try {
@@ -48,18 +76,18 @@ public class Client {
  		return false;
 	}
 	
-	public boolean receive() {
+/*	public boolean receive() {
 		System.out.println("Not implemented:Client::receive");
         try {
 			System.out.println("Server response: " + serverResponse.readLine());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
 	
 //		pkiServices.decryptMessage();
 		
 		return false;
-	}
+	} */
 
 	/**
 	 * 
@@ -74,8 +102,8 @@ public class Client {
 		
 		BalanceRequest requestMessage = new BalanceRequest(accountNum);
 //        clientRequest.println(requestMessage.getCommand() + " " + requestMessage.getClientId());
-        clientRequest.println(requestMessage.getClientId());
-        clientRequest.flush();
+//        clientRequest.println(requestMessage.getClientId());
+//        clientRequest.flush();
 //		pkiServices.signMessage();
 		
 	}

@@ -1,6 +1,8 @@
 package transactionServices;
 
-public class ClientInfo {
+import java.io.Serializable;
+
+public class ClientInfo implements Serializable {
 
 	public String clientId;
 	public String clientName;

@@ -6,9 +6,12 @@ package Server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,37 +33,61 @@ public class Server extends Thread {
 	static Account accounts[];
 	PKIServices pkiServices;
 	private static ServerSocket serverSocket;
-	private static final int PORT = 2349;
+//	private static final int PORT = 2346;
 	private static int connectionNumber = 0;
 
 	public void run() {
 		System.out
-				.println("Waiting for client connection at the port: " + PORT);
-		try {
-			while (true) {
+				.println("Waiting for client connection at the port: " );
+		while (true) {
 
+			try {
 				new ConnectionListener(serverSocket.accept(), connectionNumber++)
 						.start();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
 		}
 	}
 
 	class ConnectionListener extends Thread {
 
 		private Socket socket;
+	    private ObjectInputStream inStream = null;
 
 		public ConnectionListener(Socket socketValue, int connectionNumber) {
 			socket = socketValue;
 			connectionNumber = connectionNumber;
 		}
 
+	    public void communicate() {
+	        try {
+//	            serverSocket = new ServerSocket(4446);
+//	            socket = serverSocket.accept();
+	            System.out.println("Connected");
+	            inStream = new ObjectInputStream(socket.getInputStream());
+	 
+	            ClientInfo clientInfo = (ClientInfo) inStream.readObject();
+	            System.out.println("Object received = " + clientInfo.getClientId());
+	            socket.close();
+	 
+	        } catch (SocketException se) {
+	            System.exit(0);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (ClassNotFoundException cn) {
+	            cn.printStackTrace();
+	        }
+	    }
+
+
 		public void run() {
 
 			PrintWriter pw = null;
 			BufferedReader br = null;
-			try {
+			communicate();
+/*			try {
 				String data = null;
 				try {
 					br = new BufferedReader(new InputStreamReader(
@@ -94,7 +121,7 @@ public class Server extends Thread {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
+			} */
 		}
 	}
 
@@ -135,11 +162,11 @@ public class Server extends Thread {
 		accounts[4] = new Account("00005","John Jabaar",32.60);
 		// this.pkiServices = new PKIServices();
 		try {
-			serverSocket = new ServerSocket(PORT);
+			serverSocket = new ServerSocket(4446);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 		start();
 	}
 
