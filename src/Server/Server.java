@@ -66,13 +66,18 @@ public class Server extends Thread {
 	            inStream = new ObjectInputStream(socket.getInputStream());
 	 
 	            BalanceRequest balanceRequest = (BalanceRequest) inStream.readObject();
-	            if (isValidAccount(balanceRequest.getClientId())) {
-	            	System.out.println("Object received = " + balanceRequest.getClientId());
-	            	BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
-	            	setResponseInfo(balanceResponse);
-	                outputStream = new ObjectOutputStream(socket.getOutputStream());
-	                System.out.println(balanceResponse.getClientBalance());
-	                outputStream.writeObject(Serializer.serialize(balanceResponse));
+	            byte[]digest = new byte[50];
+	            System.arraycopy(balanceRequest.signature, 0, digest, 0, balanceRequest.signature.length);
+	            balanceRequest.clearSignature();
+	            if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)){
+	            	if (isValidAccount(balanceRequest.getClientId())) {
+		            	System.out.println("Object received = " + balanceRequest.getClientId());
+		            	BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
+		            	setResponseInfo(balanceResponse);
+		                outputStream = new ObjectOutputStream(socket.getOutputStream());
+		                System.out.println(balanceResponse.getClientBalance());
+		                outputStream.writeObject(Serializer.serialize(balanceResponse));
+	            	}
 	                
 	            } else {
 	            	System.out.println("Invalid account number : " + balanceRequest.getClientId());

@@ -11,6 +11,11 @@ public class BalanceRequest extends BankingMessage implements Serializable {
 		command = "REQUEST_BALANCE";
 		client = new ClientInfo(clientId);
 		signature = new byte[50];
+		this.clearSignature();
+	}
+	
+	public void clearSignature(){
+		for (int i = 0; i < 50; i++) signature[i] = 0;
 	}
 
 	public String getCommand() {
