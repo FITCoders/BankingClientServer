@@ -49,8 +49,17 @@ public class PKIServices {
 		    // Saving the Public key in a file
 		    ObjectOutputStream publicKeyOS = new ObjectOutputStream(
 		        new FileOutputStream(publicKeyFile));
-		    publicKeyOS.writeObject(keyPair.getPublic());
-		    publicKeyOS.close();
+		    
+		 // Store Public Key.
+			PublicKey publicKey = keyPair.getPublic();
+			X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(
+					publicKey.getEncoded());
+
+			publicKeyOS.write(x509EncodedKeySpec.getEncoded());
+			publicKeyOS.close();
+
+//...		    publicKeyOS.writeObject(keyPair.getPublic());
+//...		    publicKeyOS.close();
 	
 		    // Saving the Private key in a file
 		    ObjectOutputStream privateKeyOS = new ObjectOutputStream(
@@ -79,7 +88,7 @@ public class PKIServices {
 		try {	
 			this.hashSHA(digest, message,  "SHA-256");
 			this.encryptMessage(digest, tempDigSig);
-			System.arraycopy(tempDigSig, 0, digSig, 0, tempDigSig.length);
+			System.arraycopy(tempDigSig, 0, digSig, 0, digSig.length);
 		} 
 		catch (Exception e) {
             System.err.println("Caught exception " + e.toString());
@@ -193,7 +202,7 @@ public class PKIServices {
 * 
 * */	
 	
-	public static PublicKey caGetPublicKey(String name) throws InvalidKeySpecException {
+	public PublicKey caGetPublicKey(String name) throws InvalidKeySpecException {
 		File publicKeyFile = new File("c:\\KeyStore\\"+name+"\\public.key");
 		FileInputStream fileInStream = null;
 		byte[] keyBytes = null;

@@ -40,7 +40,7 @@ public class AssignmentController {
 			e.printStackTrace();
 		}
 //		Account account;
-		String message = "Test";
+/*		String message = "Test";
 		byte[] cipherText = new byte[128];
 		byte[] plainText = new byte[50];
 		PKIServices pkiServices = new PKIServices("AssignmentController");
@@ -50,12 +50,13 @@ public class AssignmentController {
 		pkiServices.signMessage(message.getBytes(), cipherText);
 		pkiServices.verifyMessage(message.getBytes(), cipherText);
 		PublicKey key = null;
-//		try {
-//			key = pkiServices.caGetPublicKey("Server");
-//		} catch (InvalidKeySpecException e1) {
-//			e1.printStackTrace();
-//		}
-		if (choice.equalsIgnoreCase("S")) {
+*//*		try {
+			key = pkiServices.caGetPublicKey("Server");
+		} 
+		catch (InvalidKeySpecException e1) {
+			e1.printStackTrace();
+		}
+*/		if (choice.equalsIgnoreCase("S")) {
 			Server server = new Server();
 		} else if (choice.equalsIgnoreCase("C")){
 			try {
