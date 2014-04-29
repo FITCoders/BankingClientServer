@@ -26,8 +26,6 @@ public class PKIServices {
  * */	
 	
 	private boolean generateKeyPair(){
-		System.out.println("Not finished...implement keystore:PKIServices::generateKeyPair");
-		
 		try{
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 			keyGen.initialize(1024);
@@ -74,7 +72,6 @@ public class PKIServices {
  * */	
 	
 	public boolean signMessage(byte[] message, byte[] digSig){
-		System.out.println("Not debugged:PKIServices::signMessage");
 		byte[] digest = new byte[50];
 		byte[] tempDigSig = new byte[128];
 		
@@ -87,7 +84,7 @@ public class PKIServices {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		} 
-		return false;
+		return true;
 	}
 	
 /*
@@ -127,7 +124,6 @@ public class PKIServices {
  * */	
 	
 	public boolean encryptMessage(byte[] message, byte[] cipherText){
-		System.out.println("Not debugged:PKIServices::encryptMessage");
 		byte[] tempBuf = new byte[128];
 		try {
 			final Cipher cipher = Cipher.getInstance("RSA");
@@ -163,7 +159,6 @@ public class PKIServices {
 	 * 
 	 */
 	public PKIServices(String name) {
-		System.out.println("Not finished:PKIServices::Constructor");
 		this.name = name;
 		this.generateKeyPair();
 	}

@@ -53,12 +53,12 @@ public class AssignmentController {
 		String decryptedMessage = new String(plainText);
 		pkiServices.signMessage(message.getBytes(), cipherText);
 		pkiServices.verifyMessage(message.getBytes(), cipherText);
-		if (choice.equals("S")) {
+		if (choice.equalsIgnoreCase("S")) {
 			Server server = new Server();
 //			server.addAccount(account);
 //		    server.start();
 //			server.receive();
-		} else {
+		} else if (choice.equalsIgnoreCase("C")){
 			try {
 				System.out.println("Enter Account Number : ");
 				accountNum = userInput.readLine();
@@ -70,6 +70,9 @@ public class AssignmentController {
 			client.connectToServer();
 			client.requestBalance();
 			client.receive();
+		}
+		else {
+			System.out.println("It was a simple request...S or C. Great work. I'm gone.");
 		}
 
 	}
