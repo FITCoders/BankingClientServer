@@ -69,7 +69,7 @@ public class AssignmentController {
 			Client client = new Client(accountNum);
 			client.connectToServer();
 			client.requestBalance();
-			client.receive();
+			//client.receive();
 		}
 		else {
 			System.out.println("It was a simple request...S or C. Great work. I'm gone.");
