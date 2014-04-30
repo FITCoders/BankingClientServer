@@ -40,14 +40,14 @@ public class AssignmentController {
 			e.printStackTrace();
 		}
 //		Account account;
-/*		String message = "Test";
+/**/		String message = "Test";
 		byte[] cipherText = new byte[128];
 		byte[] plainText = new byte[50];
 		PKIServices pkiServices = new PKIServices("AssignmentController");
 		pkiServices.encryptMessage(message.getBytes(), cipherText);
 		pkiServices.decryptMessage(cipherText, plainText);
 		String decryptedMessage = new String(plainText);
-		pkiServices.signMessage(message.getBytes(), cipherText);
+/*		pkiServices.signMessage(message.getBytes(), cipherText);
 		pkiServices.verifyMessage(message.getBytes(), cipherText);
 		PublicKey key = null;
 *//*		try {
