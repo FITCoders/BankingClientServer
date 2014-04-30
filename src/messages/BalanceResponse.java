@@ -16,12 +16,10 @@ public class BalanceResponse extends BankingMessage {
 	 * 
 	 */
 	public BalanceResponse() {
-		System.out.println("Not implemented:BalanceResponse::Constructor");
 		// TODO Auto-generated constructor stub
 	}
 
 	public BalanceResponse(String accountId) {
-		System.out.println("Not implemented:BalanceResponse::Constructor");
 		client = new ClientInfo(accountId);
 	}
 
@@ -31,12 +29,16 @@ public class BalanceResponse extends BankingMessage {
 	public void setClientBalance(double balance) {
 		client.clientBalance = balance;
 	}
+	public void setClientName(String name) {
+		client.clientName = name;
+	}
 	public String getClientId() {
 		return client.getClientId();
 	}
-	
+	public String toString(){
+		return client.toString() + " Status : " + status;
+	}
 	public boolean send(){
-		System.out.println("Not implemented:BalanceResponse::send");
 		return false;
 	}
 

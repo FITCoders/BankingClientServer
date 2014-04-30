@@ -13,6 +13,9 @@ public class Account {
 	public String getId() {
 		return client.getClientId();
 	}
+	public String getName() {
+		return client.getClientName();
+	}
 	public double getBalance() {
 		return client.getClientBalance();
 	}
@@ -21,7 +24,6 @@ public class Account {
 	 * 
 	 */
 	public Account(String clientId, String clientName, double clientBalance) {
-		System.out.println("Account::Constructor");
 		client = new ClientInfo(clientId, clientName, clientBalance);
 
 		// TODO Auto-generated constructor stub

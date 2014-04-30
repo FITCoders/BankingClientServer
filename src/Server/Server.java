@@ -33,8 +33,7 @@ public class Server extends Thread {
 	private static int connectionNumber = 0;
 
 	public void run() {
-		System.out
-				.println("Waiting for client connection at the port: " );
+		System.out.println("Waiting for client connection on port : " + PORT );
 		while (true) {
 
 			try {
@@ -49,13 +48,13 @@ public class Server extends Thread {
 
 	class ConnectionListener extends Thread {
 
+		private int connectionNumber;
 		private Socket socket;
 	    private ObjectInputStream inStream = null;
 	    private ObjectOutputStream outputStream = null;
 
-		public ConnectionListener(Socket socketValue, int connectionNumber) {
+		public ConnectionListener(Socket socketValue, int connectionNum) {
 			socket = socketValue;
-			connectionNumber = connectionNumber;
 		}
 
 	    public void communicate() {
@@ -67,21 +66,21 @@ public class Server extends Thread {
 	 
 	            BalanceRequest balanceRequest = (BalanceRequest) inStream.readObject();
 	            byte[]digest = new byte[50];
-	            System.arraycopy(balanceRequest.signature, 0, digest, 0, balanceRequest.signature.length);
 	            balanceRequest.clearSignature();
 	            if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)){
+            	BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
+	            System.out.println("Message received from client : " + balanceRequest.toString());
 	            	if (isValidAccount(balanceRequest.getClientId())) {
-		            	System.out.println("Object received = " + balanceRequest.getClientId());
-		            	BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
 		            	setResponseInfo(balanceResponse);
-		                outputStream = new ObjectOutputStream(socket.getOutputStream());
-		                System.out.println(balanceResponse.getClientBalance());
-		                outputStream.writeObject(Serializer.serialize(balanceResponse));
-	            	}
+	            	balanceResponse.setStatus("SUCCESS");
+		            // Send the BalanceRequest object to the client.
 	                
 	            } else {
 	            	System.out.println("Invalid account number : " + balanceRequest.getClientId());
+	            	balanceResponse.setStatus("INVALID ACCOUNT NUMBER");
 	            }
+                outputStream = new ObjectOutputStream(socket.getOutputStream());
+                outputStream.writeObject(Serializer.serialize(balanceResponse));
 	            socket.close();
 	 
 	        } catch (SocketException se) {
@@ -112,12 +111,12 @@ public class Server extends Thread {
 		for (int i=0;i<5;i++) {
 			if (accounts[i].getId().equals(response.getClientId())) {
 				response.setClientBalance(accounts[i].getBalance());;
+				response.setClientName(accounts[i].getName());
 			}
 		}
 		return false;
 	}
 	public Server() {
-		System.out.println("Server::Constructor");
 		this.pkiServices = new PKIServices("Server");
 		accounts = new Account[5];
 		accounts[0] = new Account("00001","John Wiggins",32.60);

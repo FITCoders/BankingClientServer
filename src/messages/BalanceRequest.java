@@ -35,4 +35,7 @@ public class BalanceRequest extends BankingMessage implements Serializable {
 		System.out.println("Not implemented:BalanceRequest::send");
 		return false;
 	}
+	public String toString(){
+		return client.toString() + " " + command;
+	}
 }

@@ -41,16 +41,15 @@ public class Client {
                 outputStream = new ObjectOutputStream(socket.getOutputStream());
                 BalanceRequest balanceRequest = new BalanceRequest(accountNum);
                 pkiServices.signMessage(Serializer.serialize(balanceRequest), balanceRequest.signature);
-                System.out.println("Object to be written = " + balanceRequest.getClientId());
                 outputStream.writeObject(balanceRequest);
 	            try {
 		            inputStream = new ObjectInputStream(socket.getInputStream());
 					balanceResponse = (BalanceResponse) Serializer.deserialize((byte[]) inputStream.readObject());
+					System.out.println("Response received from server " + balanceResponse.toString());
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                System.out.println("Object received = " + balanceResponse.getClientBalance());
  
             } catch (SocketException se) {
                 se.printStackTrace();

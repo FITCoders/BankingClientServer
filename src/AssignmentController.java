@@ -30,7 +30,7 @@ public class AssignmentController {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("Enter C to run client or S to run server : ");
+		System.out.print("Enter C to run client or S to run server : ");
 		BufferedReader userInput = new BufferedReader(new InputStreamReader(
 				System.in));
 		try {
@@ -60,7 +60,7 @@ public class AssignmentController {
 			Server server = new Server();
 		} else if (choice.equalsIgnoreCase("C")){
 			try {
-				System.out.println("Enter Account Number : ");
+				System.out.print("Enter Account Number : ");
 				accountNum = userInput.readLine();
 			} catch (IOException e) {
 	            System.err.println("Caught exception " + e.toString());
