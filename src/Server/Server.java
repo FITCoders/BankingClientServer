@@ -68,22 +68,24 @@ public class Server extends Thread {
 	            byte[]digest = new byte[50];
 	            balanceRequest.clearSignature();
 	            if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)){
-            	BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
-	            System.out.println("Message received from client : " + balanceRequest.toString());
-	            	if (isValidAccount(balanceRequest.getClientId())) {
-		            	setResponseInfo(balanceResponse);
-	            	balanceResponse.setStatus("SUCCESS");
-		            // Send the BalanceRequest object to the client.
-	                
-	            } else {
-	            	System.out.println("Invalid account number : " + balanceRequest.getClientId());
-	            	balanceResponse.setStatus("INVALID ACCOUNT NUMBER");
+	            	BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
+		            System.out.println("Message received from client : " + balanceRequest.toString());
+		            	if (isValidAccount(balanceRequest.getClientId())) {
+			            	setResponseInfo(balanceResponse);
+		            	balanceResponse.setStatus("SUCCESS");
+			            // Send the BalanceRequest object to the client.
+		                
+		            	} 
+		            	else {
+		            	System.out.println("Invalid account number : " + balanceRequest.getClientId());
+		            	balanceResponse.setStatus("INVALID ACCOUNT NUMBER");
+		            	}
+	                outputStream = new ObjectOutputStream(socket.getOutputStream());
+	                outputStream.writeObject(Serializer.serialize(balanceResponse));
+		            socket.close();
 	            }
-                outputStream = new ObjectOutputStream(socket.getOutputStream());
-                outputStream.writeObject(Serializer.serialize(balanceResponse));
-	            socket.close();
-	 
-	        } catch (SocketException se) {
+	        }	 
+	         catch (SocketException se) {
 	            System.exit(0);
 	        } catch (IOException e) {
 	            e.printStackTrace();
