@@ -131,7 +131,7 @@ System.out.println("MIXED KEYS Original Plaintext: " + message + " decrypted mes
 		
 		try {	
 			this.hashSHA(digest, message,  "SHA-256");
-			this.encryptMessage(digest, tempDigSig);
+			this.encryptMessage(digest, tempDigSig, keyPair.getPrivate());
 			System.arraycopy(tempDigSig, 0, digSig, 0, digSig.length);
 		} 
 		catch (Exception e) {
