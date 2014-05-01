@@ -93,11 +93,19 @@ public class Client {
 	 */
 	public Client(String accountNum) {
 		this.accountNum = accountNum;
-		this.pkiServices = new PKIServices("testClient");
+		this.pkiServices = new PKIServices("Client");
 	}
+	
 	public void requestBalance() {
-//		pkiServices.signMessage();
 		BalanceRequest requestMessage = new BalanceRequest(accountNum);
+
+		try {
+			pkiServices.signMessage(Serializer.serialize(requestMessage), requestMessage.signature);
+		} 
+		catch (IOException e) {
+            System.err.println("Caught exception " + e.toString());
+			e.printStackTrace();
+		}
 	}
 }
 

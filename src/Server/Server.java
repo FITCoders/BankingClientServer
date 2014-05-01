@@ -64,33 +64,25 @@ public class Server extends Thread {
 	            System.out.println("Connected");
 	            inStream = new ObjectInputStream(socket.getInputStream());
 	 
-				BalanceRequest balanceRequest = (BalanceRequest) inStream
-						.readObject();
+				BalanceRequest balanceRequest = (BalanceRequest) inStream.readObject();
 	            byte[]digest = new byte[50];
+	            System.arraycopy(balanceRequest.signature, 0, digest, 0, balanceRequest.signature.length);
 	            balanceRequest.clearSignature();
-				if (pkiServices.verifyMessage(
-						Serializer.serialize(balanceRequest), digest)) {
-					BalanceResponse balanceResponse = new BalanceResponse(
-							balanceRequest.getClientId());
-					System.out.println("Message received from client : "
-							+ balanceRequest.toString());
+				if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)) {
+					BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
+					System.out.println("Message received from client : " + balanceRequest.toString());
 		            	if (isValidAccount(balanceRequest.getClientId())) {
 			            	setResponseInfo(balanceResponse);
-		            	balanceResponse.setStatus("SUCCESS");
+			            	balanceResponse.setStatus("SUCCESS");
 			            // Send the BalanceRequest object to the client.
-		                
-
-					} else {
-						System.out.println("Invalid account number : "
-								+ balanceRequest.getClientId());
-		            	balanceResponse.setStatus("INVALID ACCOUNT NUMBER");
-		            	}
+						} 
+			            else {
+							System.out.println("Invalid account number : "
+									+ balanceRequest.getClientId());
+			            	balanceResponse.setStatus("INVALID ACCOUNT NUMBER");
+			            }
 					byte[] cipherText = new byte[128];
-					byte[] plainText = new byte[50];
-					PKIServices pkiServices = new PKIServices(
-							"AssignmentController");
 					pkiServices.encryptMessage(Serializer.serialize(balanceResponse), cipherText);
-					pkiServices.decryptMessage(cipherText, plainText);
 					outputStream = new ObjectOutputStream(
 							socket.getOutputStream());
 					outputStream.writeObject(cipherText);
