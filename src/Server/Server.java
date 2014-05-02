@@ -68,7 +68,7 @@ public class Server extends Thread {
 	            byte[]digest = new byte[50];
 	            System.arraycopy(balanceRequest.signature, 0, digest, 0, balanceRequest.signature.length);
 	            balanceRequest.clearSignature();
-				if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)) {
+//				if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)) {
 					BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
 					System.out.println("Message received from client : " + balanceRequest.toString());
 		            	if (isValidAccount(balanceRequest.getClientId())) {
@@ -82,12 +82,13 @@ public class Server extends Thread {
 			            	balanceResponse.setStatus("INVALID ACCOUNT NUMBER");
 			            }
 					byte[] cipherText = new byte[128];
-					pkiServices.encryptMessage(Serializer.serialize(balanceResponse), cipherText);
+//					pkiServices.encryptMessage(Serializer.serialize(balanceResponse), cipherText);
 					outputStream = new ObjectOutputStream(
 							socket.getOutputStream());
-					outputStream.writeObject(cipherText);
+//					outputStream.writeObject(cipherText);
+					outputStream.writeObject(Serializer.serialize(balanceResponse));
 		            socket.close();
-	            }
+//	            }
 			} catch (SocketException se) {
 	            System.exit(0);
 	        } catch (IOException e) {

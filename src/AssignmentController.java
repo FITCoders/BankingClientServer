@@ -21,6 +21,7 @@ public class AssignmentController {
 	 */
 	static String choice;
 	static String accountNum;
+	static String serverAddress;
 	Server server;
 
 	public AssignmentController() {
@@ -63,11 +64,16 @@ public class AssignmentController {
 			try {
 				System.out.print("Enter Account Number : ");
 				accountNum = userInput.readLine();
+				System.out.print("Enter Server IP Address or just enter for localhost : ");
+				serverAddress = userInput.readLine();
+				if (serverAddress.length() == 0) {
+					serverAddress = "localhost";
+				}
 			} catch (IOException e) {
 	            System.err.println("Caught exception " + e.toString());
 				e.printStackTrace();
 			}
-			Client client = new Client(accountNum);
+			Client client = new Client(serverAddress,accountNum);
 			client.connectToServer();
 			client.requestBalance();
 			//client.receive();

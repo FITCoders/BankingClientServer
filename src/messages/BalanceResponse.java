@@ -12,6 +12,7 @@ import transactionServices.ClientInfo;
  */
 public class BalanceResponse extends BankingMessage {
 
+	byte byte01 = '1';
 	/**
 	 * 
 	 */

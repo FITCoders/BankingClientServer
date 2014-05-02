@@ -22,12 +22,12 @@ import PKIServices.*;
  *
  */
 public class Client {
-    private static final String HOST = "localhost";
 	private static final int PORT = 4446;
     private Socket socket = null;
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
     String accountNum;
+	String serverAddress;
     BufferedReader serverResponse;
     PrintWriter clientRequest;
 	PKIServices pkiServices;
@@ -38,7 +38,9 @@ public class Client {
 		byte[] cipherText = new byte[128];
 		byte[] plainText = new byte[50];
             try {
-			socket = new Socket("localHost", PORT);
+			System.out.println("Waiting for server connection at : "
+					+ serverAddress);
+			socket = new Socket(serverAddress, PORT);
                 System.out.println("Connected");
                 outputStream = new ObjectOutputStream(socket.getOutputStream());
                 BalanceRequest balanceRequest = new BalanceRequest(accountNum);
@@ -47,10 +49,11 @@ public class Client {
                 outputStream.writeObject(balanceRequest);
 	            try {
 		            inputStream = new ObjectInputStream(socket.getInputStream());
-				cipherText = (byte[]) inputStream.readObject();
-				pkiServices.decryptMessage(cipherText, plainText);
-				balanceResponse = (BalanceResponse) Serializer
-						.deserialize(plainText);
+//				cipherText = (byte[]) inputStream.readObject();
+//				pkiServices.decryptMessage(cipherText, plainText);
+//				balanceResponse = (BalanceResponse) Serializer
+//						.deserialize(plainText);
+				balanceResponse = (BalanceResponse) Serializer.deserialize((byte[]) inputStream.readObject());
 				System.out.println("Response received from server "
 						+ balanceResponse.toString());
 				} catch (ClassNotFoundException e) {
@@ -65,10 +68,10 @@ public class Client {
             }
     }
     public boolean connectToServerOld(){
-		System.out.println("Client::connectToServer");
+		System.out.println("Client::connectToServer at " + serverAddress);
         Socket socket = null;
 		try {
-			socket = new Socket(HOST, PORT);
+			socket = new Socket(serverAddress, PORT);
 		} catch (UnknownHostException e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
@@ -91,18 +94,19 @@ public class Client {
 	/**
 	 * 
 	 */
-	public Client(String accountNum) {
+	public Client(String serverAddress, String accountNum) {
 		this.accountNum = accountNum;
 		this.pkiServices = new PKIServices("Client");
+		this.serverAddress = serverAddress;
 	}
 	
 	public void requestBalance() {
 		BalanceRequest requestMessage = new BalanceRequest(accountNum);
 
 		try {
-			pkiServices.signMessage(Serializer.serialize(requestMessage), requestMessage.signature);
-		} 
-		catch (IOException e) {
+			pkiServices.signMessage(Serializer.serialize(requestMessage),
+					requestMessage.signature);
+		} catch (IOException e) {
             System.err.println("Caught exception " + e.toString());
 			e.printStackTrace();
 		}
