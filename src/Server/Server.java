@@ -68,7 +68,7 @@ public class Server extends Thread {
 	            byte[]digest = new byte[50];
 	            System.arraycopy(balanceRequest.signature, 0, digest, 0, balanceRequest.signature.length);
 	            balanceRequest.clearSignature();
-//				if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)) {
+				if (pkiServices.verifyMessage(Serializer.serialize(balanceRequest), digest)) {}
 					BalanceResponse balanceResponse = new BalanceResponse(balanceRequest.getClientId());
 					System.out.println("Message received from client : " + balanceRequest.toString());
 		            	if (isValidAccount(balanceRequest.getClientId())) {
